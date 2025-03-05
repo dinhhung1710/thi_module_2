@@ -3,117 +3,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
-abstract class Person {
-    protected String name;
-    protected String dateOfBirth;
-    protected String gender;
-    protected String phone;
-
-    public Person(String name, String dateOfBirth, String gender, String phone) {
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
-        this.phone = phone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public abstract void display();
-}
-
-
-class Student extends Person {
-    private int studentId;
-    private String batchId; // Mã lớp học
-
-    public Student(int studentId, String name, String dateOfBirth, String gender, String phone, String batchId) {
-        super(name, dateOfBirth, gender, phone);
-        this.studentId = studentId;
-        this.batchId = batchId;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public String getBatchId() {
-        return batchId;
-    }
-
-
-    public String toCSVString() {
-        return studentId + "," + name + "," + dateOfBirth + "," + gender + "," + phone + "," + batchId;
-    }
-
-
-    public void display(String batchName) {
-        System.out.printf("%-6d | %-50s | %-10s | %-8s | %-20s%n", studentId, name, dateOfBirth, gender, batchName);
-    }
-
-
-    @Override
-    public void display() {
-        System.out.printf("%-6d | %-50s | %-10s | %-8s | %-10s | %-10s%n", studentId, name, dateOfBirth, gender, phone, batchId);
-    }
-}
-
-
-class Teacher extends Person {
-    private String teacherId;
-
-    public Teacher(String teacherId, String name, String dateOfBirth, String gender, String phone) {
-        super(name, dateOfBirth, gender, phone);
-        this.teacherId = teacherId;
-    }
-
-    public String getTeacherId() {
-        return teacherId;
-    }
-
-    @Override
-    public void display() {
-        System.out.printf("%-10s | %-50s | %-10s | %-8s | %-10s%n", teacherId, name, dateOfBirth, gender, phone);
-    }
-}
-
-
-class Batch {
-    private String batchId;
-    private String batchName;
-    private String teacherId;
-
-    public Batch(String batchId, String batchName, String teacherId) {
-        this.batchId = batchId;
-        this.batchName = batchName;
-        this.teacherId = teacherId;
-    }
-
-    public String getBatchId() {
-        return batchId;
-    }
-
-    public String getBatchName() {
-        return batchName;
-    }
-
-    public String getTeacherId() {
-        return teacherId;
-    }
-}
-
-
-class NotFoundStudentException extends Exception {
-    public NotFoundStudentException(String message) {
-        super(message);
-    }
-}
-
-
 public class Main {
-    // Đường dẫn tới các file CSV (bạn cần tạo thư mục data và file mẫu nếu cần)
+
     private static final String STUDENT_FILE = "data/students.csv";
     private static final String BATCH_FILE   = "data/batchs.csv";
     private static final String TEACHER_FILE = "data/teachers.csv";
@@ -195,7 +86,7 @@ public class Main {
 
     private static void writeStudents(List<Student> students) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(STUDENT_FILE))) {
-            // Ghi header
+
             pw.println("studentId,studentName,dateOfBirth,gender,phone,batchId");
             for (Student s : students) {
                 pw.println(s.toCSVString());
